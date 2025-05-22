@@ -20,8 +20,6 @@ export function useEditableData<T extends { id: string | number }>(
     }
   }, [key]);
 
-  // useCallback возможно
-
   const resetSelectedValue = () => setSelected(null);
 
   const handleSave = (updated: T) => {

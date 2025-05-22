@@ -1,5 +1,17 @@
 import { useEffect, useState } from 'react';
 
+function setDeepValue<T>(obj: T, path: string, value: any): T {
+  const keys = path.split('.');
+  const lastKey = keys.pop()!;
+  const target = keys.reduce((acc, key) => {
+    if (typeof acc[key] !== 'object' || acc[key] === null) acc[key] = {};
+    return acc[key];
+  }, obj as any);
+
+  target[lastKey] = value;
+  return { ...obj };
+}
+
 export function useEditableModal<T extends Record<string, any>>({
   item,
   onSave,
@@ -15,22 +27,8 @@ export function useEditableModal<T extends Record<string, any>>({
     if (item) setEdited(item);
   }, [item]);
 
-  const handleChange = (key: string, value: string) => {
-    setEdited((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleNestedChange = (
-    parentKey: string,
-    key: string,
-    value: string,
-  ) => {
-    setEdited((prev) => ({
-      ...prev,
-      [parentKey]: {
-        ...prev[parentKey],
-        [key]: value,
-      },
-    }));
+  const handleChange = (path: string, value: any) => {
+    setEdited((prev) => setDeepValue({ ...prev }, path, value));
   };
 
   const handleSave = () => {
@@ -42,7 +40,6 @@ export function useEditableModal<T extends Record<string, any>>({
     item,
     edited,
     handleChange,
-    handleNestedChange,
     handleSave,
   };
 }

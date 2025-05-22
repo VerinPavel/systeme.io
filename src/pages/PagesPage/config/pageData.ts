@@ -1,6 +1,6 @@
-import type { Page } from '../types/types';
+const tabelColumnsKeys = ['title', 'active', 'updatedAt', 'publishedAt'];
 
-const pagesMoc: Page[] = [
+const pagesMoc = [
   {
     id: 23634610,
     title: 'aliquip sit proident veniam tempor',
@@ -73,4 +73,4 @@ const pagesMoc: Page[] = [
   },
 ];
 
-export { pagesMoc };
+export { pagesMoc, tabelColumnsKeys};

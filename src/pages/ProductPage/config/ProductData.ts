@@ -1,13 +1,41 @@
-import type { Product } from '../types/types';
+// const tabelColumnsKeys = [
+//   'name',
+//   'active',
+//   'createdAt',
+//   'options',
+//   'method',
+//   'null',
+//   'undefined',
+// ];
+const tabelColumnsKeys = ['name', 'active', 'createdAt', 'options'];
 
-const productsMoc: Product[] = [
+const productsMoc = [
   {
     id: 14381328,
     name: 'id quis voluptate nostrud',
     options: {
       size: 'XL',
       amount: 100,
+      method: function () {
+        return 0;
+      },
+      null: null,
+      undefined: undefined,
+      options1: {
+        size: 'XL',
+        amount: 100,
+        method: function () {
+          return 0;
+        },
+        null: null,
+        undefined: undefined,
+      },
     },
+    method: function () {
+      return 0;
+    }, ///не отображается, если явно не указать в tabelColumnsKeys
+    null: null, ///не отображается, если явно не указать в tabelColumnsKeys
+    undefined: undefined, ///не отображается, если явно не указать в tabelColumnsKeys
     active: true,
     createdAt: '1985-08-09T02:10:18.0Z',
   },
@@ -102,4 +130,4 @@ const productsMoc: Product[] = [
     createdAt: '2012-09-24T01:42:32.0Z',
   },
 ];
-export { productsMoc };
+export { productsMoc, tabelColumnsKeys };
