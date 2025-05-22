@@ -1,5 +1,4 @@
-import type { Product } from '../types/types';
-import { productsMoc } from '../config/ProductData';
+import { productsMoc, tabelColumnsKeys } from '../config/ProductData';
 
 import { SearchInput } from '@/shared/ui/Filters/Search';
 import { StatusFilter } from '@/shared/ui/Filters/StatusFilter';
@@ -8,20 +7,16 @@ import { Modal } from '@/shared/ui/Modal/Modal';
 
 import { useEditableData } from '@/shared/hooks/useEditableData';
 import { useSearchAndFilter } from '@/shared/hooks/useSearchFilter';
-
-const tabelColumnsKeys = [
-  'name',
-  'active',
-  'createdAt',
-  'options',
-] satisfies (keyof Product)[];
+import { getAllowedKeysProp } from '@/shared/utils/allowedKeysProp';
 
 const ProductPage = () => {
   const { data, selected, setSelected, handleSave, resetSelectedValue } =
-    useEditableData<Product>('products-data', productsMoc);
+    useEditableData('products-data', productsMoc);
 
   const { filteredData, search, setSearch, activeFilter, setActiveFilter } =
     useSearchAndFilter(data);
+
+  const allowedKeysProp = getAllowedKeysProp(tabelColumnsKeys);
 
   return (
     <div className="p-4 space-y-4">
@@ -31,11 +26,7 @@ const ProductPage = () => {
         <StatusFilter value={activeFilter} onChange={setActiveFilter} />
       </div>
       <div className="rounded-xl shadow border border-gray-200 overflow-x-auto">
-        <Table
-          data={filteredData}
-          allowedKeys={tabelColumnsKeys}
-          onEdit={setSelected}
-        />
+        <Table data={filteredData} {...allowedKeysProp} onEdit={setSelected} />
       </div>
       <Modal item={selected} onClose={resetSelectedValue} onSave={handleSave} />
     </div>

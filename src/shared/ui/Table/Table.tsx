@@ -2,7 +2,7 @@ import { formatValue } from '@/shared/utils/formatValue';
 
 type TableProps<T extends object> = {
   data: T[];
-  allowedKeys: (keyof T)[];
+  allowedKeys?: string[];
   onEdit: (item: T) => void;
 };
 
@@ -18,13 +18,28 @@ const Table = <T extends object>({
       </div>
     );
 
+  const columns: string[] =
+    allowedKeys && allowedKeys.length > 0
+      ? allowedKeys
+      : Object.keys(data[0]).filter((key) => {
+          const value = data[0][key as keyof T];
+          return (
+            typeof value === 'string' ||
+            typeof value === 'number' ||
+            typeof value === 'boolean' ||
+            (typeof value === 'object' &&
+              value !== null &&
+              !Array.isArray(value))
+          );
+        });
+
   return (
     <table className="w-full table-auto text-sm text-black">
       <thead className="bg-purple-600 text-white">
         <tr>
-          {allowedKeys.map((key) => (
-            <th key={String(key)} className="px-4 py-2 text-left">
-              {String(key)}
+          {columns.map((key) => (
+            <th key={key} className="px-4 py-2 text-left capitalize">
+              {key}
             </th>
           ))}
           <th className="px-4 py-2 text-left">Edit</th>
@@ -33,9 +48,9 @@ const Table = <T extends object>({
       <tbody>
         {data.map((item, i) => (
           <tr key={i} className="bg-white hover:bg-gray-100 transition">
-            {allowedKeys.map((key) => (
-              <td key={String(key)} className="px-4 py-2 border-t">
-                {formatValue(item[key])}
+            {columns.map((key) => (
+              <td key={key} className="px-4 py-2 border-t whitespace-pre-wrap">
+                {formatValue(item[key as keyof T])}
               </td>
             ))}
             <td className="px-4 py-2 border-t">

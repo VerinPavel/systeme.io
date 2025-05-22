@@ -1,6 +1,12 @@
-import type { PricePlans } from '../types/types';
+const tabelColumnsKeys = [
+  'id',
+  'description',
+  'active',
+  'createdAt',
+  'removedAt',
+];
 
-const pricePlansMoc: PricePlans[] = [
+const pricePlansMoc = [
   {
     id: 13334466,
     description: 'aute fugiat commodo id',
@@ -73,4 +79,4 @@ const pricePlansMoc: PricePlans[] = [
   },
 ];
 
-export { pricePlansMoc };
+export { pricePlansMoc, tabelColumnsKeys };
